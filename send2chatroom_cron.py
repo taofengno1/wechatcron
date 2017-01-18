@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from apscheduler.scheduler import Scheduler
-import itchat, time
-import rethinkdb as r
+import itchat, time, logging, sys
 
-r.connect( "localhost", 28015).repl()
+reload(sys)
+sys.setdefaultencoding("utf-8")
+logging.basicConfig()
+
 itchat.auto_login()
 
 sched = Scheduler()
 sched.start()
-
 
 def task():
   chatroomList = itchat.get_chatrooms(False);
@@ -19,6 +20,6 @@ def task():
       text = u'可以定时发送了'.encode('utf-8')
       itchat.send(text, m['UserName'])
 
-sched.add_cron_job(task, month='1-12', day_of_week='0-6', hour=19, minute=20)
+sched.add_cron_job(task, month='1-12', day_of_week='0-6', hour=11, minute=21)
 
 itchat.run()
